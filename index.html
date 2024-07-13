@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arya Perde</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Side navigation -->
+  
+  <div class="sidenav">
+    <a href="#items" onclick="openTab('items')">Items</a>
+    <a href="#customers" onclick="openTab('customers')">Customers</a>
+    <a href="#sells" onclick="openTab('sells')">Sells</a>
+    <!-- <a href="#receipts" onclick="openTab('receipts')">Receipts</a> -->
+   <!-- <a href="#" onclick="clearStorage()" class="red">Clear Storage</a>-->
+  </div>
+
+  <!-- Logo -->
+  
+  <div class="logo">
+    <img src="logo.jpg" alt="Logo">
+  </div>
+
+  <!-- Page content -->
+  <div class="main">
+    <!-- Items Tab -->
+    <div id="items" class="tab">
+      <h2>Items</h2>
+      <input type="text" id="itemSearchInput" placeholder="Search by Name">
+      <form id="itemForm">
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <input type="text" id="itemColor" placeholder="Item Color" required>
+        <input type="number" id="itemMeters" step="0.01" placeholder="Meters" required>
+        <button type="submit">Add Item</button>
+      </form>
+      
+      <table id="itemTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Sells Tab -->
+    <div id="sells" class="tab">
+      <h2>Sells</h2>
+      <input type="text" id="sellSearchInput" placeholder="Search by Customer">
+      <form id="sellForm">
+        <select id="customerSelect" required>
+          <option value="">Select Customer</option>
+        </select>
+        <input type="text" id="itemSearch" placeholder="Search Item" list="itemList" required>
+        <datalist id="itemList"></datalist>
+        <input type="text" id="quantity" placeholder="Quantity" required>
+        <input type="number" id="price" placeholder="Price" step="0.01" required>
+        <button type="submit">Add Sell</button>
+      </form>
+      <table id="sellTable">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Customers Tab -->
+    
+    <div id="customers" class="tab">
+      <h2>Customers</h2>
+      <input type="text" id="customerSearchInput" placeholder="Search by Name">
+      <form id="customerForm">
+        <input type="text" id="customerName" placeholder="Customer Name" required>
+        <input type="tel" id="customerPhone" placeholder="Phone Number" required>
+        <input type="text" id="customerAddress" placeholder="Address" required>
+        <button type="submit">Add Customer</button>
+      </form>
+      <table id="customerTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    
+
+    <!-- Receipts Tab -->
+    <!-- (You can add this later if needed) -->
+
+
+    <!-- View Modal -->
+    <div id="viewModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalItemName"></h2>
+        <p id="modalItemColor"></p>
+        <div id="meterList"></div>
+      </div>
+    </div>
+
+
+    <!-- Purchase Details Modal -->
+    <div id="purchaseModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeReceiptModal()">&times;</span>
+        <!-- Small logo for receipt --
+        <div class="receipt-logo">
+          <img src="logo/logo.jpg" alt="Logo">
+        </div>-->
+        <div id="purchaseDetails"> 
+          <!-- Receipt details will be populated here -->
+        </div>
+        <button onclick="printReceipt()">Print Receipt</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // JavaScript for filtering tables in real-time
+      const itemSearchInput = document.getElementById('itemSearchInput');
+      const sellSearchInput = document.getElementById('sellSearchInput');
+      const customerSearchInput = document.getElementById('customerSearchInput');
+
+      itemSearchInput.addEventListener('input', function() {
+        filterTable('itemTable', 0, this.value);
+      });
+
+      sellSearchInput.addEventListener('input', function() {
+        filterTable('sellTable', 0, this.value);
+      });
+
+      customerSearchInput.addEventListener('input', function() {
+        filterTable('customerTable', 0, this.value);
+      });
+
+      function filterTable(tableId, columnIndex, filterValue) {
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 1; i < rows.length; i++) {
+          const td = rows[i].getElementsByTagName('td')[columnIndex];
+          if (td) {
+            let txtValue = td.textContent || td.innerText;
+            if (txtValue.toLowerCase().indexOf(filterValue.toLowerCase()) > -1) {
+              rows[i].style.display = '';
+            } else {
+              rows[i].style.display = 'none';
+            }
+          }       
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>
